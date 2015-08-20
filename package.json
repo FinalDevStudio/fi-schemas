@@ -1,0 +1,39 @@
+{
+  "name": "fi-seed-component-schemas",
+  "title": "Fi Seed Schemas Component",
+  "description": "Fi Seed's Schemas Component",
+  "version": "0.0.0",
+  "private": false,
+  "license": "MIT",
+  "author": "Final Development Studio <sorcery@finaldevstudio.com> (http://finaldevstudio.com)",
+  "contributors": [
+    "Santiago G. Marín <santiago@finaldevstudio.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/finaldevstudio/fi-seed-component-schemas.git"
+  },
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha test/*.js"
+  },
+  "dependencies": {
+    "type-of-is": "^3.4.0",
+    "walk": "^2.3.9"
+  },
+  "devDependencies": {
+    "mongoose": "^4.1.3",
+    "chai": "^3.2.0",
+    "mocha": "^2.2.5"
+  },
+  "bugs": {
+    "url": "https://github.com/finaldevstudio/fi-seed-component-schemas/issues"
+  },
+  "homepage": "https://github.com/finaldevstudio/fi-seed-component-schemas",
+  "main": "lib/index.js",
+  "keywords": [
+    "component",
+    "mongoose",
+    "fi-seed",
+    "schemas"
+  ]
+}
