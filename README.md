@@ -1,4 +1,4 @@
-# fi-schemas
+# Fi Schemas
 Mongoose's schema loader for Node.js Express apps
 
 ## Installing
