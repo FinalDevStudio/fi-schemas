@@ -1,7 +1,7 @@
 {
-  "name": "fi-seed-component-schemas",
-  "title": "Fi Seed Schemas Component",
-  "description": "Fi Seed's Schemas Component",
+  "name": "fi-schemas",
+  "title": "Fi Schemas",
+  "description": "Mongoose's schema loader for Node.js Express apps",
   "version": "1.0.1",
   "private": false,
   "license": "MIT",
@@ -11,7 +11,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/finaldevstudio/fi-seed-component-schemas.git"
+    "url": "git+https://github.com/finaldevstudio/fi-schemas.git"
   },
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha test/*.js"
@@ -26,9 +26,9 @@
     "mocha": "^2.2.5"
   },
   "bugs": {
-    "url": "https://github.com/finaldevstudio/fi-seed-component-schemas/issues"
+    "url": "https://github.com/finaldevstudio/fi-schemas/issues"
   },
-  "homepage": "https://github.com/finaldevstudio/fi-seed-component-schemas",
+  "homepage": "https://github.com/finaldevstudio/fi-schemas",
   "main": "lib/index.js",
   "keywords": [
     "component",
