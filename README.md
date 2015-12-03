@@ -1,9 +1,9 @@
 # Fi Schemas
-Mongoose's schema loader for Node.js Express apps
+Mongoose's schema loader for Node.js Express applications.
 
 ## Installing
 
-```
+```sh
 npm install --save fi-schemas
 ```
 
