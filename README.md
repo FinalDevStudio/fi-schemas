@@ -1,4 +1,4 @@
-# Fi Schemas
+# Fi Schemas [![Build Status](https://travis-ci.org/FinalDevStudio/fi-schemas.svg?branch=master)](https://travis-ci.org/FinalDevStudio/fi-schemas)
 Mongoose's schema loader for Node.js Express applications.
 
 ## Installing
