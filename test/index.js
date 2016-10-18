@@ -1,28 +1,22 @@
 'use strict';
 
-var expect = require('chai').expect;
-var mongoose = require('mongoose');
-var schemas = require('..');
-var path = require('path');
+const expect = require('chai').expect;
+const mongoose = require('mongoose');
+const schemas = require('..');
 
-var config = require('./config');
+const config = require('./config');
 
-var data = {
+const data = {
   roles: [],
   genders: []
 };
 
+mongoose.Promise = Promise;
+
 describe('Fi Seed Schemas', function () {
   before(function (done) {
-    mongoose.connect('mongodb://localhost/fi-seed-component-schemas');
-
-    mongoose.connection.on('error', function (err) {
-      throw err;
-    });
-
-    mongoose.connection.once('open', function () {
-      done();
-    });
+    mongoose.connect('mongodb://localhost/fi-schemas-test')
+      .then(done).catch(done);
   });
 
   it('should be a function', function () {
@@ -45,70 +39,103 @@ describe('Fi Seed Schemas', function () {
   it('mongoose should be able to create a new static.role document from it\'s registered schema', function (done) {
     var Role = mongoose.model('static.role');
 
-    new Role({
-      slug: 'admin',
-      name: 'Administrator'
-    }).save(function (err, role) {
-      expect(err).to.be.null;
+    Role.create({
+      name: 'Administrator',
+      slug: 'admin'
+    })
+
+    .then((role) => {
       expect(role).to.be.an('object');
+      expect(role.name).to.equal('Administrator');
+      expect(role.slug).to.equal('admin');
 
       data.roles.push(role);
 
       done();
-    });
+    })
+
+    .catch(done);
   });
 
   it('mongoose should be able to create a new static.gender document from it\'s registered schema', function (done) {
     var Gender = mongoose.model('static.gender');
 
-    new Gender({
-      slug: 'male',
-      name: 'Male'
-    }).save(function (err, gender) {
-      expect(err).to.be.null;
+    Gender.create({
+      name: 'Female',
+      slug: 'female'
+    })
+
+    .then((gender) => {
       expect(gender).to.be.an('object');
+      expect(gender.name).to.equal('Female');
+      expect(gender.slug).to.equal('female');
 
       data.genders.push(gender);
 
       done();
-    });
+    })
+
+    .catch(done);
   });
 
   it('mongoose should be able to create a new user document from it\'s registered schema', function (done) {
     var User = mongoose.model('user');
 
-    new User({
-      name: 'John Smith',
-      email: 'john.smith@example.com',
+    User.create({
+      name: 'Jane Smith',
+      email: 'jane.smith@example.com',
       role: data.roles[0]._id,
       gender: data.genders[0]._id
-    }).save(function (err, role) {
-      expect(err).to.be.null;
-      expect(role).to.be.an('object');
+    })
 
-      data.roles.push(role);
+    .then(function (user) {
+      expect(user).to.be.an('object');
+      expect(user.name).to.equal('Jane Smith');
+      expect(user.email).to.equal('jane.smith@example.com');
+      expect(user.role).to.equal(data.roles[0]._id);
+      expect(user.gender).to.equal(data.genders[0]._id);
 
       done();
-    });
+    })
+
+    .catch(done);
   });
 
   it('should pass the config.arguments values to the schema', function (done) {
     var User = mongoose.model('user');
 
-    User.findOne().
+    User.findOne()
+      .where('email').equals('jane.smith@example.com')
 
-    where('email').equals('john.smith@example.com').
+    .populate('gender')
 
-    populate('gender').
-    populate('role').
+    .populate('role')
 
-    exec(function (err, user) {
-      expect(err).to.be.null;
+    .then((user) => {
       expect(user).to.be.an('object');
       expect(user.text).to.equal(config.arguments[0]);
+      expect(user.gender).to.be.an('object');
+      expect(user.gender.name).to.equal('Female');
+      expect(user.gender.slug).to.equal('female');
+      expect(user.gender._id.equals(data.genders[0]._id)).to.be.true;
+      expect(user.role).to.be.an('object');
+      expect(user.role.name).to.equal('Administrator');
+      expect(user.role.slug).to.equal('admin');
+      expect(user.role._id.equals(data.roles[0]._id)).to.be.true;
 
       done();
-    });
+    })
+
+    .catch(done);
+  });
+
+  it('should not register partial schemas', function (done) {
+    var models = mongoose.modelNames();
+
+    expect(models.length).to.equal(3);
+    expect(models.indexOf('partials._static')).to.equal(-1);
+
+    done();
   });
 
   after(function () {

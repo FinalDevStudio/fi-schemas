@@ -25,12 +25,11 @@ module.exports = function (Schema, text) {
       type: Schema.Types.ObjectId,
       ref: 'static.role',
       required: true
-    },
-
-    created: {
-      type: Date,
-      default: Date.now
     }
+
+  }, {
+
+    timestamps: true
 
   });
 
