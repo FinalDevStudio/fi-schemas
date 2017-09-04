@@ -6,7 +6,7 @@ module.exports = {
 
   basedir: path.normalize(path.join(__dirname, 'schemas')),
 
-  debug: console.log,
+  debug: true,
 
   arguments: [
     'A default text'

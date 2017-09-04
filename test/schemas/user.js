@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function (Schema, text) {
+module.exports = (Schema, text) => {
 
   var schema = new Schema({
 
@@ -33,9 +33,7 @@ module.exports = function (Schema, text) {
 
   });
 
-  schema.virtual('text').get(function () {
-    return text;
-  });
+  schema.virtual('text').get(() => text);
 
   return schema;
 

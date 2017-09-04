@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function (Schema) {
+module.exports = Schema => {
 
   return require('../partials/_static')(Schema);
 

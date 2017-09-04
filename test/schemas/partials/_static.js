@@ -1,17 +1,13 @@
 'use strict';
 
-module.exports = function (Schema) {
+module.exports = Schema => new Schema({
 
-  return new Schema({
+  slug: {
+    type: String,
+    required: true,
+    unique: true
+  },
 
-    slug: {
-      type: String,
-      required: true,
-      unique: true
-    },
+  name: String
 
-    name: String
-
-  });
-
-};
+});
