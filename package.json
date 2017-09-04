@@ -32,9 +32,12 @@
   "homepage": "https://github.com/finaldevstudio/fi-schemas",
   "main": "lib/index.js",
   "keywords": [
-    "component",
+    "grouping",
     "mongoose",
+    "partials",
     "fi-seed",
-    "schemas"
+    "schemas",
+    "loader",
+    "model"
   ]
 }
