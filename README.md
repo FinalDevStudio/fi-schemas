@@ -14,6 +14,8 @@ npm install --save fi-schemas
 
 ```js
 const schemas = require('fi-schemas');
+
+schemas.load(config).then(/* ... */)
 ```
 
 
@@ -30,7 +32,7 @@ const options = {
 
 mongoose.connect('mongodb://localhost/your-database-name', options);
 
-  .then(() => schemas(config))
+  .then(() => schemas.load(config)) // Configures self and loads schemas
 
   .then(() => {
     console.log('Schemas registered!');
@@ -47,9 +49,13 @@ mongoose.connect('mongodb://localhost/your-database-name', options);
 ### Configuration
 
 An `Object` with the following parameters:
-- **basedir**: This is required and must be a `String`. This must be the path where the schemas are located.
-- **arguments**: This is optional and can be an `Array` to apply to each schema exported function arguments right after the default `mongoose.Schema` argument.
-- **debug**: This is optional and can be a `Function` to log with or a `Boolean`. If `true` it will use `console.log`.
+
+| Param | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `basedir` | `String` | Yes | `undefined` | This must be the path where the schemas are located. |
+| `partialsdir` | `String` | No | `undefined` | This must be the path where the schema partials are located. |
+| `arguments` | `Array` | No | `[]` | This are the arguments to apply to each schema exported function arguments right after the default `mongoose.Schema` argument. |
+| `debug` | `Boolean\|Function` | No | `[]` | Can be a `Function` to log with or a `Boolean`. If `true` it will use `console.log`. |
 
 
 ### Schemas
@@ -57,18 +63,22 @@ An `Object` with the following parameters:
 The schema files inside your `config.basedir` folder must export a `Function` that returns the compiled **Mongoose** Schema. In short, they should be like this:
 
 ```js
-module.exports = Schema => {
+'use strict';
 
-  const schema = new Schema({
+const schemas = require('fi-schemas');
 
-    name: {
-      first: String,
-      last: String
+module.exports = (Schema) => {
+
+  const schema = new Schema(schemas.partial('user'));
+
+  schema.add({
+
+    roles: {
+      type: String,
+      enum: ['ROLE.ADMIN', 'ROLE.USER']
     }
 
   });
-
-  schema.virtual('name.full').get(() => this.name.first + this.name.last);
 
   return schema;
 
@@ -110,19 +120,21 @@ module.exports = (Schema, aString, aFunction) => {
 };
 ```
 
-
 ### Partials
 
-If a schema name starts with underscore (_) it will be treated as a partial and won't be registered as a model. This is useful if you have shared objects between your schemas so you can require them freely without having garbage collections.
+Any `.js` file inside the `partialsdir` path will be ignored and won't be registered as a model. This is useful if you have shared objects between your schemas so you can require them freely without having duplicate collections on your database.
+
+You can export anything that you found useful from this modules, usually, objects.
 
 
 ### Naming
 
-The schema names will be generated from their name relative to the `config.basedir` defined folder and the slashes will be replaced with dots. So, if `config.basedir` equals to `/app/schemas` then the Mongoose model and mongo collection names will be as follows:
+The schema names will be generated from their name relative to the `config.basedir` defined folder and the slashes will be replaced with dots. So, if `config.basedir` equals to `/app/schemas` and `config.partialsdir` equals to `/app/schemas/partials` then the Mongoose model and mongo collection names will be as follows:
 
 File Path                           | Model Name          | Collection name
 ----------------------------------- | ------------------- | ----------------------
-`/app/schemas/_shared.js`           | Ignored             | Ignored
+`/app/schemas/partials/shared.js`   | Ignored             | Ignored
+`/app/schemas/partials/user.js`     | Ignored             | Ignored
 `/app/schemas/user.js`              | `user`              | `users`
 `/app/schemas/post/index.js`        | `post`              | `posts`
 `/app/schemas/post/comment.js`      | `post.comment`      | `posts.comments`
@@ -137,40 +149,31 @@ This is done in order to maintain concistency and provide an easy way of groupin
 ```js
 'use strict';
 
-const CONST_STRING = 'This is a very important string';
-
-/**
- * Function used in all schemas.
- */
-function aFunction() {
-  //...
-}
-
 module.exports = {
 
   debug: require('debug')('app:schemas'),
 
+  partialsdir: path.normalize(path.join(__dirname, 'schemas', 'partials')),
+
   basedir: path.normalize(path.join(__dirname, 'schemas')),
 
-  arguments: [
-    /* Here you can reference or declare a function that you will use in all of
-     * your schemas... */
-    aFunction,
+  // Here you can set a default options object to use in all of your schemas...
+  arguments: [{
 
-    /* ... add constant string or value... */
-    CONST_STRING,
+    timestamps: true
 
-    /* .. you can also declare in-place, of course... */
-    'Another string',
-
-    /* ... or an array... */
-    [1, 2, 3, 4],
-
-    /* ... or an object, etc. */
-    {
-      prop: 'value'
-    }
-  ]
+  }]
 
 };
 ```
+
+
+# API
+
+The module provides the following methods:
+
+| Method | Arguments | Description |
+| --- | --- | --- |
+| `configure` | `config` | This method is used to configure the module. It's also used internally by `load` if not previously configured. |
+| `load` | `config` | This method is used to configure the module and load the schemas inside `config.basedir` folder. |
+| `partial` | `name` | The partial's name to load. It will be loaded relative to the `config.partialsdir` folder. |
