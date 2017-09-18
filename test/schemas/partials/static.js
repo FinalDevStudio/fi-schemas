@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = Schema => new Schema({
+module.exports = {
 
   slug: {
     type: String,
@@ -10,4 +10,4 @@ module.exports = Schema => new Schema({
 
   name: String
 
-});
+};
