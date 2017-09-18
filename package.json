@@ -2,7 +2,7 @@
   "name": "fi-schemas",
   "title": "Fi Schemas",
   "description": "Mongoose's schema loader for Node.js Express apps",
-  "version": "3.0.1",
+  "version": "4.0.0",
   "private": false,
   "license": "MIT",
   "author": "Final Development Studio <sorcery@finaldevstudio.com> (http://finaldevstudio.com)",
