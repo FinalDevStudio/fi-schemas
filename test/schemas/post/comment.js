@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = Schema => {
+module.exports = (Schema, options) => {
 
   const schema = new Schema({
 
@@ -19,11 +19,7 @@ module.exports = Schema => {
       ref: 'user'
     }
 
-  }, {
-
-    timestamps: true
-
-  });
+  }, options);
 
   return schema;
 

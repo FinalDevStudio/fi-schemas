@@ -1,19 +1,12 @@
 'use strict';
 
-module.exports = (Schema, text) => {
+const schemas = require('../../lib');
 
-  var schema = new Schema({
+module.exports = (Schema, options, text) => {
 
-    name: {
-      type: String,
-      required: true
-    },
+  const schema = new Schema(schemas.partial('user'), options);
 
-    email: {
-      type: String,
-      required: true,
-      unique: true
-    },
+  schema.add({
 
     gender: {
       type: Schema.Types.ObjectId,
@@ -26,10 +19,6 @@ module.exports = (Schema, text) => {
       ref: 'static.role',
       required: true
     }
-
-  }, {
-
-    timestamps: true
 
   });
 

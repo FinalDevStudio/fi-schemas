@@ -1,7 +1,9 @@
 'use strict';
 
-module.exports = Schema => {
+const schemas = require('../../../lib');
 
-  return require('../partials/_static')(Schema);
+module.exports = (Schema) => {
+
+  return new Schema(schemas.partial('static'));
 
 };
