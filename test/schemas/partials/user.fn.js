@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = {
+module.exports = () => ({
   name: {
     type: String,
     required: true
@@ -11,4 +11,4 @@ module.exports = {
     required: true,
     unique: true
   }
-};
+});

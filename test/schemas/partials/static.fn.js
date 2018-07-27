@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = {
+module.exports = () => ({
   slug: {
     type: String,
     required: true,
@@ -8,4 +8,4 @@ module.exports = {
   },
 
   name: String
-};
+});
