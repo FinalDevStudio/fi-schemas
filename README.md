@@ -1,3 +1,7 @@
+---
+### No longer maintained. Please see [@fiquu/schema-loader-mongoose](https://github.com/fiquu/schema-loader-mongoose).
+---
+
 # Fi Schemas [![Build Status](https://travis-ci.org/FinalDevStudio/fi-schemas.svg?branch=master)](https://travis-ci.org/FinalDevStudio/fi-schemas)
 
 Mongoose schema loader for Node.js applications.
